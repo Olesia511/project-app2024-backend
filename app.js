@@ -1,8 +1,8 @@
 import express from "express";
 import logger from "morgan";
 import cors from "cors";
-import usersRouter from "./routes/api/usersRouter";
 import "dotenv/config";
+import authRouter from "./routes/api/authRouter.js";
 
 const app = express();
 
@@ -11,9 +11,10 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static("public"));
 
-app.use("/api/users", usersRouter);
+app.use("/api/users", authRouter);
 
-app.use((_, res) => {
+app.use((req, res) => {
+  console.log(`req`, req);
   res.status(404).json({ message: "Route not found" });
 });
 
@@ -22,4 +23,4 @@ app.use((err, req, res, next) => {
   res.status(status).json({ message });
 });
 
-module.exports = app;
+export default app;
